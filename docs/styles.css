@@ -105,17 +105,17 @@ button:hover {
 }
 .tile_direction_right {
   transform: translate(calc(100% + var(--gap-container)), 0);
-  transition: all 2.5s ease-in;
+  transition: all 1.5s ease-in;
 }
 .tile_direction_left {
   transform: translate(calc(-100% + var(--gap-container)), 0);
-  transition: all 2.5s ease-in;
+  transition: all 1.5s ease-in;
 }
 .tile_direction_bottom {
   transform: translate(0, calc(100% + var(--gap-container)));
-  transition: all 2.5s ease-in;
+  transition: all 1.5s ease-in;
 }
 .tile_direction_top {
   transform: translate(0, calc(-100% + var(--gap-container)));
-  transition: all 2.5s ease-in;
+  transition: all 1.5s ease-in;
 }

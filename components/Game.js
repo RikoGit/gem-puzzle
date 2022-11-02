@@ -11,7 +11,7 @@ class Game {
     this.getTiles();
     this.nextToEmptyTiles = new Map();
     this.targetTile = null;
-    this.transitionDuration = 2500;
+    this.transitionDuration = 1500;
     this.timerId = 0;
     this.isTileMoving = false;
     this.emptyTileIndex = this.tiles.indexOf();
@@ -185,8 +185,8 @@ class Game {
   }
 
   createDomElement() {
-    this.domElement.innerHTML = `<h1>Gem Puzzle</h1><div class="toolbar" aria-label='toolbar'><button class='button button_type_start'>Shuffle and start</button>\
-    <button class='button button_type_stop'>Stop</button></div>\
+    this.domElement.innerHTML = `<h1>Gem Puzzle</h1><div class="toolbar" aria-label='toolbar'>\
+    <button class='button button_type_start'>Shuffle and start</button></div>\
     <p>Moves: <span class="moves">${this.moves}</span> </p>
     <p>Time: <span class="time"></span></p>\
     <div class='container' data-size="4">${this.getTilesElements(8)}</div>\
