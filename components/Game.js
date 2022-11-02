@@ -10,7 +10,9 @@ class Game {
     this.moves = 0;
     this.getTiles();
     this.nextToEmptyTiles = new Map();
+    this.targetTile = null;
     this.transitionDuration = 2500;
+    this.timerId = 0;
     this.isTileMoving = false;
     this.emptyTileIndex = this.tiles.indexOf();
     this.domElement = document.createElement('div');
@@ -99,11 +101,15 @@ class Game {
         this.getNextToEmptyTiles();
         const tileNumber = Number(target.dataset.number);
         if (this.nextToEmptyTiles.has(tileNumber)) {
-          target.classList.add(`tile_pos_${this.nextToEmptyTiles.get(tileNumber)}`);
+          this.targetTile = target;
+          const direction = this.nextToEmptyTiles.get(tileNumber);
+          target.classList.add(`tile_direction_${direction}`);
           this.isTileMoving = true;
           let index = this.tiles.indexOf(tileNumber);
-          setTimeout(() => {
-            target.classList.remove(`tile_pos_${this.nextToEmptyTiles.get(tileNumber)}`);
+          this.setMoves(this.moves + 1);
+          this.timerId = setTimeout(() => {
+            target.classList.remove(`tile_direction_${direction}`);
+            this.targetTile = null;
             [this.tiles[index], this.tiles[this.emptyTileIndex]] = [
               this.tiles[this.emptyTileIndex],
               this.tiles[index],
@@ -111,7 +117,6 @@ class Game {
             this.nextToEmptyTiles.clear();
             this.addGridTemplateAreas();
             this.isTileMoving = false;
-            this.setMoves(this.moves + 1);
             this.checkResult();
           }, this.transitionDuration);
           this.timer.start();
@@ -144,20 +149,20 @@ class Game {
   getNextToEmptyTiles() {
     this.emptyTileIndex = this.tiles.indexOf(0);
     if ((this.emptyTileIndex + 1) % this.width && this.emptyTileIndex % this.width) {
-      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex - 1], 'left');
-      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex + 1], 'right');
+      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex - 1], 'right');
+      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex + 1], 'left');
     } else if (!((this.emptyTileIndex + 1) % this.width)) {
-      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex - 1], 'left');
+      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex - 1], 'right');
     } else {
-      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex + 1], 'right');
+      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex + 1], 'left');
     }
     if (this.emptyTileIndex >= this.width && this.emptyTileIndex < this.tiles.length - this.width) {
-      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex - this.width], 'top');
-      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex + this.width], 'bottom');
+      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex - this.width], 'bottom');
+      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex + this.width], 'top');
     } else if (this.emptyTileIndex < this.width) {
-      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex + this.width], 'bottom');
+      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex + this.width], 'top');
     } else {
-      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex - this.width], 'top');
+      this.nextToEmptyTiles.set(this.tiles[this.emptyTileIndex - this.width], 'bottom');
     }
   }
 
@@ -181,9 +186,7 @@ class Game {
 
   createDomElement() {
     this.domElement.innerHTML = `<h1>Gem Puzzle</h1><div class="toolbar" aria-label='toolbar'><button class='button button_type_start'>Shuffle and start</button>\
-    <button class='button button_type_stop'>Stop</button>\
-    <button class='button button_type_save'>Save</button>\
-    <button class='button button_type_result'>Results</button></div>\
+    <button class='button button_type_stop'>Stop</button></div>\
     <p>Moves: <span class="moves">${this.moves}</span> </p>
     <p>Time: <span class="time"></span></p>\
     <div class='container' data-size="4">${this.getTilesElements(8)}</div>\
@@ -212,7 +215,8 @@ class Game {
       this.getTiles();
       document.querySelector('.container').dataset.size = this.width;
     }
-    this.popup.hide();
+    this.resetTileTranslate();
+    // this.popup.hide();
     this.timer.stop();
     this.timer.show();
     this.shuffle();
@@ -227,6 +231,20 @@ class Game {
   resetMoves() {
     this.moves = 0;
     document.querySelector('.moves').textContent = this.moves;
+  }
+
+  resetTileTranslate() {
+    clearTimeout(this.timerId);
+    this.nextToEmptyTiles.clear();
+    this.isTileMoving = false;
+    if (!this.targetTile) return;
+
+    this.targetTile.classList.remove(
+      'tile_direction_left',
+      'tile_direction_right',
+      'tile_direction_top',
+      'tile_direction_bottom',
+    );
   }
 
   reset() {
