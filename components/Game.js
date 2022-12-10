@@ -15,7 +15,7 @@ class Game {
     this.nextToEmptyTiles = new Map();
     this.target = null;
     this.targetTile = null;
-    this.transitionDuration = 300;
+    this.transitionDuration = 200;
     this.timerId = 0;
     this.isTileMoving = false;
     this.emptyTileIndex = this.tiles.indexOf();

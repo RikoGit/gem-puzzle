@@ -4,6 +4,7 @@
   --bg-color: hsl(0 0% 15%);
   --gap-container: 4px;
   --border-radius: 3px;
+  --transition-duration: 0.2s;
 }
 
 body {
@@ -141,7 +142,7 @@ button:hover {
 .tile_direction_left,
 .tile_direction_bottom,
 .tile_direction_top {
-  transition: all 0.3s ease-in;
+  transition: all var(--transition-duration) ease-in;
 }
 .tile_correct {
   background-color: hsl(120 100% 25%); /* hsl(33deg 18% 57%); */
