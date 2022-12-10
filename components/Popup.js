@@ -1,14 +1,14 @@
 class Popup {
-  constructor({onClick, parentNode = document.body}) {
+  constructor({parentNode = document.body}) {
     this.domElement = document.createElement('div');
     this.createDomElement().setDomElementClass().renderTo(parentNode);
-    //if (onClick) {
-    //  document.getElementById(Popup.CLASSES.buttonid).addEventListener('click', onClick);
-    //}
   }
 
   createDomElement() {
-    this.domElement.innerHTML = `<h2 class='popup__title'>«Hooray! You solved the puzzle!»</h2>`;
+    this.domElement.innerHTML = `<article class='popup__content'>\
+    <h2 class='popup__title'>«Hooray! <br/>You solved the puzzle!»</h2>\
+    <button class='popup__button popup__button_type_start' \
+    type='button'>try again</button></article>`;
 
     return this;
   }
@@ -28,7 +28,7 @@ class Popup {
   show(text) {
     this.domElement.classList.add('popup_state_open');
     if (text) {
-      document.querySelector('.popup__title').textContent = text;
+      document.querySelector('.popup__title').innerHTML = text;
     }
 
     return this;

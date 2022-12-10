@@ -1,8 +1,9 @@
 :root {
   --tile-width: 50px;
-  --font-color: #111;
-  --bg-color: hsla(0, 0%, 15%);
-  --gap-container: 2px;
+  --font-color: hsl(0 0% 90%);
+  --bg-color: hsl(0 0% 15%);
+  --gap-container: 4px;
+  --border-radius: 3px;
 }
 
 body {
@@ -11,11 +12,12 @@ body {
   font-family: system-ui;
   font-size: 14px;
   color: var(--font-color);
-  /*background-color: var(--bg-color);*/
+  background-color: var(--bg-color);
   text-align: center;
 }
 button {
   min-height: 36px;
+  font-size: 14px;
 }
 button,
 button:focus,
@@ -23,8 +25,6 @@ button:active,
 button:hover {
   box-sizing: border-box;
   cursor: pointer;
-  background-color: transparent;
-  background: none;
 }
 .popup {
   position: fixed;
@@ -36,27 +36,46 @@ button:hover {
   background-color: hsla(0, 0%, 0%, 0.5);
   z-index: 20;
 }
-.popup__title {
-  margin: auto;
+.popup__content {
+  margin: 65px auto auto;
   padding: 20px;
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   max-width: 100vw;
   min-height: 200px;
-  background-color: #eee;
+  color: hsl(230deg 82% 31%);
+  background-color: hsl(0 0% 84%);
+  line-height: 31px;
 }
 .popup_state_open {
   display: flex;
 }
+.toolbar,
+.sizes-container {
+  margin: auto;
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+  gap: 7px;
+}
+.sizes-container__button {
+  min-height: 36px;
+  flex-grow: 1;
+}
 .container {
   margin: 0 auto 20px;
+  padding: var(--gap-container);
   width: 300px;
   height: 300px;
   display: grid;
   gap: var(--gap-container);
   grid-template-rows: repeat(4, 1fr);
   grid-template-columns: repeat(4, 1fr);
+  background-color: hsl(26 95% 7%);
+  border-radius: var(--border-radius);
 }
 .container[data-size='2'] {
   grid-template-rows: repeat(2, 1fr);
@@ -97,25 +116,69 @@ button:hover {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  background: hsla(117, 13%, 40%);
+  background: hsl(12 34% 26%);
   font-size: 20px;
+  box-shadow: 0 0 5px inset hsl(11 73% 8%);
+  border-radius: var(--border-radius);
+  cursor: default;
 }
 .tile[data-number='0'] {
   visibility: hidden;
 }
 .tile_direction_right {
   transform: translate(calc(100% + var(--gap-container)), 0);
-  transition: all 1.5s ease-in;
 }
 .tile_direction_left {
-  transform: translate(calc(-100% + var(--gap-container)), 0);
-  transition: all 1.5s ease-in;
+  transform: translate(calc(-100% - var(--gap-container)), 0);
 }
 .tile_direction_bottom {
   transform: translate(0, calc(100% + var(--gap-container)));
-  transition: all 1.5s ease-in;
 }
 .tile_direction_top {
-  transform: translate(0, calc(-100% + var(--gap-container)));
-  transition: all 1.5s ease-in;
+  transform: translate(0, calc(-100% - var(--gap-container)));
+}
+.tile_direction_right,
+.tile_direction_left,
+.tile_direction_bottom,
+.tile_direction_top {
+  transition: all 0.3s ease-in;
+}
+.tile_correct {
+  background-color: hsl(120 100% 25%); /* hsl(33deg 18% 57%); */
+}
+button,
+.button_type_sound:hover {
+  color: var(--font-color);
+  border-color: hsl(230deg 71% 49%);
+  box-shadow: 0 1px 2px hsl(230deg 27% 55%);
+  text-shadow: 0 -1px 1px hsl(230deg 27% 25%);
+  background-color: hsl(230deg 82% 51%);
+  background-image: linear-gradient(to bottom, hsl(230deg 82% 53%), hsl(230deg 82% 47%));
+  border-radius: var(--border-radius);
+}
+.button_type_sound[aria-pressed='true'],
+.sizes-container__button:active,
+.sizes-container__button[aria-checked='true'] {
+  padding-top: 0.5em;
+  padding-bottom: 0.3em;
+  border-color: hsl(230deg 71% 49%);
+  border-style: inset;
+  background-color: hsl(230deg 82% 31%);
+  background-image: linear-gradient(to bottom, hsl(230deg 82% 63%), hsl(230deg 82% 57%));
+  box-shadow: inset 0 3px 5px 1px hsl(230deg 82% 30%);
+}
+.sizes-container__button:active,
+.sizes-container__button[aria-checked='true'] {
+  cursor: default;
+}
+.button_type_sound[aria-pressed='true']:hover {
+  border-color: hsl(230deg 71% 49%);
+  background-color: hsl(230deg 82% 31%);
+  background-image: linear-gradient(to bottom, hsl(230deg 82% 43%), hsl(230deg 82% 37%));
+  box-shadow: inset 0 3px 5px 1px hsl(230deg 82% 20%);
+}
+button:focus {
+  outline-color: currentColor;
+  outline-offset: 2px;
+  outline: 2px solid;
 }
